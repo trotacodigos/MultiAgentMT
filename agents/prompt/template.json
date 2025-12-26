@@ -1,0 +1,5 @@
+{"version": "1.0",
+"with_ref": false,
+{"agent":"proofread",
+"instruction":"Review the given translation for errors. Find errors and correct them first. Then, generate five rephrased translations optimized for fluency and adequacy in the {domain} domain. Select the most contextually appropriate version based on linguistic fluency in {tgt_lang}, preservation of source accuracy, and adherence to professional translation standards. Output only the final best translation. Do not include the other versions, reasoning, or any additional text. The output must consist of a single sentence only.\n\n"}
+}

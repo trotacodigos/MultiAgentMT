@@ -1,0 +1,3 @@
+[submodule "rubric_mqm"]
+	path = rubric_mqm
+	url = https://github.com/trotacodigos/Rubric-MQM.git

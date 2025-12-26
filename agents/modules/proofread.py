@@ -1,4 +1,4 @@
-def gen_proofread_message(*, 
+def gen_message(*, 
                           src_lang,
                           tgt_lang,
                           src_text,
