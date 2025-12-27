@@ -79,6 +79,18 @@ Additional notes:
 |src_lang|tgt_lang|src_text|**target**|ref_text|domain|
 |...|...|...|...|...|...|
 
+# Input & Output
+🧑‍🏫 **Source**: 你永远主动联系不上这个专员，也不知道她的工号，也没有直线联系电话，就是你联系不上她，只有她联系你。
+
+🧑‍🏫 **Reference**: Since you don't know the commissioner's job number and there isn't a direct phone number to call, you'll never make the effort to get in touch with her, She is the only one who can reach you, You can't.
+
+🤖 **Translation**: You never actively contact the commissioner, you never know her job number, you never have a direct telephone line, you never contact her, she only contacts you.
+
+🤖 **Postedit**: You can never proactively reach this specialist. You don't know her employee ID, nor do you have a direct phone number. It's always that you cannot contact her; only she can contact you.
+
+🤖 **Proofread**: You can never proactively contact the commissioner, you never know her employee ID, you never have a direct telephone line, you cannot reach her, she only contacts you.
+
+🤖🤖🤖 **Multi-agent Translation**: You can never proactively reach this commissioner, as you don’t know her employee ID or have a direct phone number; only she contacts you, and you cannot get in touch with her.
 
 # Project Structure
 ```

@@ -30,11 +30,18 @@ async def run_batch_async(
     if not all(col in df.columns for col in required_cols):
         raise ValueError(f"Missing required columns: {required_cols}")
     
-    rows = [row.to_dict() for _, row in df.iterrows()]
+    rows = [(idx, row.to_dict()) for idx, row in df.iterrows()]
     is_jsonl = output_path and output_path.endswith(".jsonl")
 
+    async def _run(idx, row):
+        result = await run_single(cfg, row, task)
+        return {
+            "id": idx,
+            "translation": result,
+        }
+
     results = []
-    coros = [run_single(cfg, row, task) for row in rows]
+    coros = [_run(idx, row) for idx, row in rows]
     for idx, coro in enumerate(
         tqdm(
             asyncio.as_completed(coros),
