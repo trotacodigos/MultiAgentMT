@@ -10,20 +10,20 @@
 - **Dec 27, 2025** — Version 1.0 officially released
 - **Nov 8, 2025** — Our work was accepted and presented at the Conference on Machine Translation (WMT) 2025
 
-# 🫧 Features
+# ✺ Features
 - Support for both single-task and multi-task execution modes  
 - Integration of [Rubric-MQM](https://github.com/trotacodigos/Rubric-MQM) as an automatic post-editing (APE) component  
 - Fully asynchronous OpenAI API integration   
 
-# 🤖 Quick Start
-### ✺ Set your OpenAI API key
+# ✺  Quick Start
+### ➡ Set your OpenAI API key
 ```bash
 export OPENAI_API_KEY=sk-xxxx
 # or
 export OPENAI_API_KEYS=sk-key1,sk-key2
 ```
 
-### ✺ Clone Rubric-MQM as a submodule
+### ➡ Clone Rubric-MQM as a submodule
 This project uses Rubric-MQM as an automatic post-editing (APE) component.
 Clone it under the name rubric_mqm and add it to PYTHONPATH.
 
@@ -32,8 +32,8 @@ git clone https://github.com/trotacodigos/Rubric-MQM rubric_mqm
 export PYTHONPATH=$PYTHONPATH:/your/full/path/to/rubric_mqm
 ```
 
-### ✺ Configuration (YAML)
-You can run the system in either single-task mode (one agent) or multi-task mode (full pipeline: translate → postedit → proofread).  
+### ➡ Configuration (YAML)
+You can run the system in either single-task mode (one agent) or multi-task mode (full pipeline: translate → postedit → proofread).
 Model selection and decoding parameters are fully configurable via YAML.
 
 🤖 **Single-tasker Example** [(config file ↗)](config/single.yaml)
@@ -62,7 +62,7 @@ model:
         max_tokens: 1024
 ```
 
-### ✺ Prepare your data
+### ➡ Prepare your data
 Input data must be provided as a CSV file. The required columns for all modes are:
 - src_lang
 - tgt_lang
@@ -79,7 +79,7 @@ Additional notes:
 |src_lang|tgt_lang|src_text|**target**|ref_text|domain|
 |...|...|...|...|...|...|
 
-# Input & Output
+# ✺ Input & Output
 🧑‍🏫 **Source**: 你永远主动联系不上这个专员，也不知道她的工号，也没有直线联系电话，就是你联系不上她，只有她联系你。
 
 🧑‍🏫 **Reference**: Since you don't know the commissioner's job number and there isn't a direct phone number to call, you'll never make the effort to get in touch with her, She is the only one who can reach you, You can't.
@@ -92,7 +92,7 @@ Additional notes:
 
 🤖🤖🤖 **Multi-agent Translation**: You can never proactively reach this commissioner, as you don’t know her employee ID or have a direct phone number; only she contacts you, and you cannot get in touch with her.
 
-# Project Structure
+# ✺ Project Structure
 ```
 Multi-AgentMT/
 ├─ agents/
@@ -118,7 +118,7 @@ Multi-AgentMT/
    └─ multi.yaml
 ```
 
-# 👐 Citation
+# ✺ Citation
 If you use this framework in your research or projects, please cite it as follows:
 
 ```
@@ -160,3 +160,5 @@ If you use this framework in your research or projects, please cite it as follow
     abstract = "We present IR{\_}Multi-agentMT, our submission to the WMT25 General Shared Task. The system adopts an AI-agent paradigm implemented through a multi-agent workflow, Prompt Chaining, in combination with RUBRIC-MQM, an automatic MQM-based error annotation metric. Our primary configuration follows the Translate{--}Postedit{--}Proofread paradigm, where each stage progressively enhances translation quality. We conduct a preliminary study to investigate (i) the impact of initial translation quality and (ii) the effect of enforcing explicit responses from the Postedit Agent. Our findings highlight the importance of both factors in shaping the overall performance of multi-agent translation systems."
 }
 ```
+
+# ✺ [License](LICENSE)
