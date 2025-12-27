@@ -5,7 +5,7 @@ def gen_message(*,
                 src_lang,
                 tgt_lang,
                 src_text,
-                target,
+                target=None,
                 domain=None,
                 version="1.0",
                 ):
@@ -23,14 +23,17 @@ def gen_message(*,
     return [
         {
             "role": "system",
-            "content": "You are a professional editor specializing in machine translation quality improvement."
+            "content": "You are a professional {src_lang}-to-{tgt_lang} translator, tasked with providing translations suitable for use in {src_lang} {src_code}.".format(
+                src_lang=src_lang,
+                tgt_lang=tgt_lang,
+                src_code=source_lang2code(src_lang),
+            )
         },
         {
             "role": "user",
             "content": (
                 content +
                 f"\n\n{src_lang} source: ```{src_text}```\n"
-                f"{tgt_lang} translation: ```{target}```"
             )
         }
     ]
