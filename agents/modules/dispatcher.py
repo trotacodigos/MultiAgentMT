@@ -25,10 +25,11 @@ def dispatch_methods(task: str) -> tuple:
 
 
 def dispatch_params(task: str, cfg: dict) -> dict:
+
     if task == "translate":
         return {}
     elif task == "proofread":
-        return {"version": cfg["version"]}
+        return {"version": cfg["prompt"]["version"]}
     else:
         raise ValueError(f"Unsupported task: {task}")
 

@@ -8,14 +8,10 @@ from typing import Dict, Any
 async def run_multi_async(
         cfg: Dict[str, Any],
         row: Dict[str, Any],
+        task = "multi",
 ) -> str:
     """
     Multi-agent Framework: translate -> postedit -> proofread
-    
-    :param cfg: Configuration dictionary containing model and task settings
-    :param row: A dictionary representing a single data row with source and target texts
-
-    :return: Final processed text after all tasks
     """
     tasks = ("translate", "postedit", "proofread")
 
@@ -24,10 +20,10 @@ async def run_multi_async(
         cfg["model"]["temperature"] = cfg["model"][task]["temperature"]
         cfg["model"]["max_tokens"] = cfg["model"][task]["max_tokens"]
 
-        response = await run_single_async(cfg, row)
+        response = await run_single_async(cfg, row, task)
 
         if not response:
             return response
         row["target"] = response
-        
+
     return response

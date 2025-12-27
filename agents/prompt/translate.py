@@ -15,7 +15,7 @@ def gen_message(*,
 
     content = instruction.format(
         src_lang=src_lang,
-        src_code=source_lang2code(src_lang),
+        tgt_code=lang2code(tgt_lang),
         tgt_lang=tgt_lang,
         domain=domain
     )
@@ -23,10 +23,10 @@ def gen_message(*,
     return [
         {
             "role": "system",
-            "content": "You are a professional {src_lang}-to-{tgt_lang} translator, tasked with providing translations suitable for use in {src_lang} {src_code}.".format(
+            "content": "You are a professional {src_lang}-to-{tgt_lang} translator, tasked with providing translations suitable for use in {tgt_lang} {tgt_code}.".format(
                 src_lang=src_lang,
                 tgt_lang=tgt_lang,
-                src_code=source_lang2code(src_lang),
+                tgt_code=lang2code(tgt_lang),
             )
         },
         {
@@ -38,10 +38,10 @@ def gen_message(*,
         }
     ]
 
-def source_lang2code(lang: str) -> str: #TODO!
+def lang2code(lang: str) -> str: #TODO!
     lang_map = {
-        "English": "en",
-        "Chinese": "zh",
+        "English": "en_US",
+        "Chinese": "zh_CN",
         "French": "fr",
         "German": "de_DE",
         "Spanish": "es",

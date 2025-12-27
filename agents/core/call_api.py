@@ -2,11 +2,10 @@ import copy
 import logging
 import os
 import random
-import time
 from typing import Dict, Any, List, Optional
+import asyncio
+from openai import AsyncOpenAI
 
-from openai import OpenAI
-from tenacity import retry, stop_after_attempt, wait_random_exponential
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -37,24 +36,26 @@ def _load_api_keys() -> List[str]:
 def _select_api_key(api_keys: List[str]) -> str:
     return random.choice(api_keys)
 
-def _get_client() -> OpenAI:
+def _get_client() -> AsyncOpenAI:
     api_keys = _load_api_keys()
     api_key = _select_api_key(api_keys)
-    return OpenAI(api_key=api_key)
+    return AsyncOpenAI(api_key=api_key)
 
 
-@retry(
-    wait=wait_random_exponential(min=1, max=60),
-    stop=stop_after_attempt(6),
-    reraise=True,
-)
-def _completion(client: OpenAI, **kwargs) -> Any:
-    return client.chat.completions.create(**kwargs)
+async def _completion(client: AsyncOpenAI, **kwargs) -> Any:
+    for attempt in range(6):
+        try:
+            return await client.chat.completions.create(**kwargs)
+        except Exception as e:
+            wait = min(2 ** attempt, 60)
+            logging.warning(f"Retry {attempt+1}/6 after {wait}s: {e}")
+            await asyncio.sleep(wait)
+    raise RuntimeError("OpenAI API failed after retries")
 
 
-def call_api(request: Dict[str, Any]) -> Dict[str, Any]:
+async def call_api_async(request: Dict[str, Any]) -> Dict[str, Any]:
     try:
-        raw = _completion(_get_client(), **request["request"])
+        raw = await _completion(_get_client(), **request["request"])
         return _verify_response(raw)
     except Exception as e:
         logging.warning(f"API call failed: {e}")
@@ -80,7 +81,7 @@ def _verify_response(response: Any) -> Dict[str, Any]:
     return {"content": None, "usage": 0}
 
 
-def call_with_semantic_retry(
+async def call_with_semantic_retry(
     request: Dict[str, Any],
     *,
     max_retries: int = 2,
@@ -88,7 +89,7 @@ def call_with_semantic_retry(
     current = copy.deepcopy(request)
 
     for attempt in range(max_retries + 1):
-        result = call_api(current)
+        result = await call_api_async(current)
 
         if result["content"]:
             return result
@@ -108,11 +109,11 @@ def call_with_semantic_retry(
     return result
 
 
-def get_one_api(request: dict):
-    return call_with_semantic_retry(request)
+async def get_one_api(request: dict):
+    return await call_with_semantic_retry(request)
 
 
-def get_api(
+async def get_api(
     requests: List[Dict[str, Any]],
     *,
     sleep_sec: Optional[float] = None,
@@ -123,10 +124,10 @@ def get_api(
 
     for idx, request in enumerate(requests):
         api_key = api_keys[idx % len(api_keys)]
-        result = call_with_semantic_retry(api_key, request)
+        result = await call_with_semantic_retry(api_key, request)
         responses.append(result)
 
         if sleep_sec:
-            time.sleep(sleep_sec)
+            await asyncio.sleep(sleep_sec)
 
     return responses

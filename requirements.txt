@@ -1,2 +1,5 @@
 openai
 tenacity
+pandas
+tqdm
+pyyaml

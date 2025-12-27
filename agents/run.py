@@ -11,10 +11,10 @@ def main():
         description="Multi-agent MT system"
     )
     parser.add_argument(
-        "--mode",
-        choices=["single", "multi"],
+        "--task",
+        choices=["translate", "postedit", "proofread", "multi"],
         required=True,
-        help="Run mode: single-task (single) or multi-task (multi)",
+        help="Running task: single-task (translate, postedit, proofread) or multi-task (multi)",
     )
     parser.add_argument("--input", required=True, help="Input CSV")
     parser.add_argument("--output", required=True, help="Output file (csv/jsonl)")
@@ -30,7 +30,7 @@ def main():
         run_batch_async(
             df=df, 
             cfg=cfg,
-            tasker=args.mode,
+            task=args.task,
             output_path=args.output,
         )
     )

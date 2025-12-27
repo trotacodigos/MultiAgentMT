@@ -8,7 +8,7 @@ def load_instruction(
     template: Path = None,
 ) -> str:
     if template is None:
-        template = Path(__file__) / "template.json"
+        template = Path(__file__).parent / "template.json"
 
     with open(template, "r", encoding="utf-8") as f:
         record = json.load(f)

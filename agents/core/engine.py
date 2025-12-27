@@ -11,20 +11,20 @@ from tqdm import tqdm
 async def run_batch_async(
     df: pd.DataFrame,
     cfg: Dict[str, Any],
-    tasker: str, # "single" or "multi"
+    task: str, # "multi" / translate, postedit, or proofread
     output_path: Optional[str] = None,
     progress_callback=None,
 ):
     # Decide the type of agents
-    if tasker == "single":
-        from remote.agents.modules.singletasker import run_single_async as run_single
-    if tasker == "multi":
-        from remote.agents.modules.multitasker import run_multi_async as run_single
+    if task in ("translate", "postedit", "proofread"):
+        from agents.modules.singletasker import run_single_async as run_single
+    elif task == "multi":
+        from agents.modules.multitasker import run_multi_async as run_single
     else:
-        raise ValueError(f"Unsupported tasker: {tasker}")
+        raise ValueError(f"Unsupported task: {task}")
 
     required_cols = ["src_lang", "tgt_lang", "src_text", "target"]
-    if tasker == "single" and cfg["task"] == "translate":
+    if task == "translate":
         required_cols.remove("target")
 
     if not all(col in df.columns for col in required_cols):
@@ -34,7 +34,7 @@ async def run_batch_async(
     is_jsonl = output_path and output_path.endswith(".jsonl")
 
     results = []
-    coros = [run_single(cfg, row) for row in rows]
+    coros = [run_single(cfg, row, task) for row in rows]
     for idx, coro in enumerate(
         tqdm(
             asyncio.as_completed(coros),
