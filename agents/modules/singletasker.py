@@ -25,6 +25,7 @@ async def run_single_async(
             tgt_lang=row["tgt_lang"],
             src_text=row["src_text"],
             target=row.get("target", None),
+            domain=row.get("domain", None),
             model=cfg["model"]["name"],
             temperature=cfg["model"]["temperature"],
             max_tokens=cfg["model"]["max_tokens"],

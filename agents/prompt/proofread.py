@@ -6,7 +6,7 @@ def gen_message(*,
                 tgt_lang,
                 src_text,
                 target,
-                domain=None,
+                domain,
                 version="1.0",
                 ):
     

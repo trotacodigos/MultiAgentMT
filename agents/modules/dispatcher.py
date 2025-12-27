@@ -40,6 +40,7 @@ def build_request(
     tgt_lang: str,
     src_text: str,
     target: str,
+    domain: str,
     model: str,
     temperature: float,
     max_tokens: int,
@@ -52,6 +53,7 @@ def build_request(
         tgt_lang=tgt_lang,
         src_text=src_text,
         target=target,
+        domain=domain,
         **params,
     )
 
