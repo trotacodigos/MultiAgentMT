@@ -1,0 +1,23 @@
+version: "v1.0"
+
+reproducibility:
+  seed: 42
+
+model:
+  translate:
+    name: gpt-4.1-mini-2025-04-14
+    temperature: 0.7
+    max_tokens: 2048
+
+  postedit:
+    name: gpt-4.1-mini-2025-04-14
+    temperature: 0.7
+    max_tokens: 2048
+
+  proofread:
+    name: gpt-4.1-mini-2025-04-14
+    temperature: 0.7
+    max_tokens: 2048
+
+prompt:
+  version: "1.0"

@@ -1,0 +1,14 @@
+version: "v1.0"
+
+reproducibility:
+  seed: 42
+
+task: postedit
+
+model:
+  name: gpt-4.1-mini-2025-04-14
+  temperature: 0.7
+  max_tokens: 2048
+
+prompt:
+  version: "1.0"
