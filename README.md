@@ -67,37 +67,18 @@ model:
         max_tokens: 1024
 ```
 
-### ➡ Prepare your data
-Input data must be provided as a CSV file. The required columns for all modes are:
-- src_lang
-- tgt_lang
-- src_text
-
-Additional notes:
-- `target` is not used by Translation Agent, but is required by Post-edit & Proofread Agents to use it as the initial hypothesis.
+### Additional notes:
+- The `target` field is ignored by the Translation agent, but is required by the Post-edit and Proofread agents, where it serves as the initial hypothesis.
 - **If you already have a translation, you can skip the Translate Agent** by setting `skip_translate_if_provided: true` in your multi-task configuration.
   - Skips the translate step and directly proceeds to postedit → proofread
   - Only available in multi-task mode
 - During multi-task execution, agents iteratively upate the `target` field.
 
-```yaml
-# Enable skipping translate when translation is already provided
-skip_translate_if_provided: true
-
-model:
-    translate:
-        name: gpt-4.1
-        temperature: 0.7
-        max_tokens: 1024
-    postedit:
-        name: gpt-4o
-        temperature: 0.7
-        max_tokens: 1024
-    proofread:
-        name: gpt-5
-        temperature: 0.7
-        max_tokens: 1024
-```
+### ➡ Prepare your data
+Input data must be provided as a CSV file. The required columns for all modes are:
+- src_lang
+- tgt_lang
+- src_text
 
 
 **Example CSV format**
