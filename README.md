@@ -69,9 +69,10 @@ Input data must be provided as a CSV file. The required columns for all modes ar
 - src_text
 
 Additional notes:
-- `target` is optional for Translation Agent, but is obligatory to Post-edit & Proofread Agents to use it as the initial hypothesis
+- `target` is not used by Translation Agent, but is required by Post-edit & Proofread Agents to use it as the initial hypothesis.
+- If you already have a translation and want to skip the Translate Agent, you can configure it in your YAML file by turning `skip_translate_if_provided` off.
 - During multi-task execution, agents iteratively upate the `target` field.
-- If you already have a translation, you may skip the Translate Agent (future option). ✅
+
 
 **Example CSV format**
 |||||||
@@ -84,13 +85,15 @@ Additional notes:
 
 🧑‍🏫 **Reference**: Since you don't know the commissioner's job number and there isn't a direct phone number to call, you'll never make the effort to get in touch with her, She is the only one who can reach you, You can't.
 
-🤖 **Translation**: You never actively contact the commissioner, you never know her job number, you never have a direct telephone line, you never contact her, she only contacts you.
+🤖 **Translate**: You never actively contact the commissioner, you never know her job number, you never have a direct telephone line, you never contact her, she only contacts you.
 
 🤖 **Postedit**: You can never proactively reach this specialist. You don't know her employee ID, nor do you have a direct phone number. It's always that you cannot contact her; only she can contact you.
 
 🤖 **Proofread**: You can never proactively contact the commissioner, you never know her employee ID, you never have a direct telephone line, you cannot reach her, she only contacts you.
 
-🤖🤖🤖 **Multi-agent Translation**: You can never proactively reach this commissioner, as you don’t know her employee ID or have a direct phone number; only she contacts you, and you cannot get in touch with her.
+🤖🤖🤖 **Multi-agent Translation**<sup>[1]</sup>: You can never proactively reach this commissioner, as you don’t know her employee ID or have a direct phone number; only she contacts you, and you cannot get in touch with her.
+
+<sup>[1]</sup> This translation differs from those produced by single-agent systems, which generate outputs based on a previously provided translation. In contrast, the multi-agent approach performs the translation process collaboratively from scratch.
 
 # ✺ Project Structure
 ```
