@@ -5,10 +5,6 @@ reproducibility:
 
 task: postedit
 
-# Skip processing if translation is already provided in the 'target' column
-# Applicable for postedit and proofread tasks
-skip_translate_if_provided: false
-
 model:
   name: gpt-4.1-mini-2025-04-14
   temperature: 0.7

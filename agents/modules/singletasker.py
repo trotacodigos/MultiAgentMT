@@ -12,24 +12,8 @@ async def run_single_async(
     ):
     # Different settings for different tasks
     assert task in ("translate", "postedit", "proofread"), f"Unsupported task: {task}"
-    
-    # Skip processing if translation is already provided and configured to skip
-    # This applies to postedit and proofread tasks
-    # Note: Both tasks require an existing translation in 'target' to process
-    # When skip is enabled, we return the existing translation without further processing
-    if task in ("postedit", "proofread"):
-        skip_processing = bool(
-            cfg.get("skip_translate_if_provided", False) and
-            row.get("target") and
-            isinstance(row.get("target"), str) and
-            row.get("target").strip()
-        )
-        if skip_processing:
-            return row["target"]
 
     # Generate prompt and make API request
-    # Note: postedit uses Rubric-MQM engine for automatic post-editing,
-    # while translate and proofread use OpenAI API with different prompts
     if task == "postedit":
         response = engine.run_single(row=row, cfg=cfg)
         return response["data"]["text"]
