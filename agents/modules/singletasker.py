@@ -30,6 +30,7 @@ async def run_single_async(
     assert task in ("translate", "postedit", "proofread"), f"Unsupported task: {task}"
 
     # If target is not provided for proofread task, invoke translate agent first
+    # Note: translate task doesn't require target and won't recurse back
     if task == "proofread" and _is_empty_target(row.get("target")):
         # Invoke translate agent to get initial translation
         translation = await run_single_async(cfg, row, "translate")
@@ -38,6 +39,7 @@ async def run_single_async(
     # Generate prompt and make API request
     if task == "postedit":
         # If target is not provided for postedit task, invoke translate agent first
+        # Note: translate task doesn't require target and won't recurse back
         if _is_empty_target(row.get("target")):
             translation = await run_single_async(cfg, row, "translate")
             row["target"] = translation
