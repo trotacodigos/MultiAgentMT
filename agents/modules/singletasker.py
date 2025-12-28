@@ -13,8 +13,19 @@ async def run_single_async(
     # Different settings for different tasks
     assert task in ("translate", "postedit", "proofread"), f"Unsupported task: {task}"
 
+    # If target is not provided for proofread task, invoke translate agent first
+    if task == "proofread" and not row.get("target"):
+        # Invoke translate agent to get initial translation
+        translation = await run_single_async(cfg, row, "translate")
+        row["target"] = translation
+
     # Generate prompt and make API request
     if task == "postedit":
+        # If target is not provided for postedit task, invoke translate agent first
+        if not row.get("target"):
+            translation = await run_single_async(cfg, row, "translate")
+            row["target"] = translation
+        
         response = engine.run_single(row=row, cfg=cfg)
         return response["data"]["text"]
     else:
