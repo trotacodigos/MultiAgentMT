@@ -2,15 +2,19 @@
     <img src="data/images/logo.png" alt="logo" width=600>
 </p>
 
-
 **Multi-Agent MT** is a pipeline-based AI agent framework that progressively refines translations via **Translate → Post-edit → Proofread**.
-
 
 # 🗞️ News
 - **Dec 27, 2025** — Version 1.0 officially released
 - **Nov 8, 2025** — Our work was accepted and presented at the Conference on Machine Translation (WMT) 2025
 
 # ✺ Features
+<p align="left">
+  <img src="https://img.shields.io/badge/python-3.11.8-blue?logo=python&logoColor=white" />
+  <img src="https://img.shields.io/github/license/trotacodigos/MultiAgentMT" />
+  <img src="https://img.shields.io/badge/version-1.1-violet" />
+</p>
+
 - Support for both single-task and multi-task execution modes  
 - Integration of [Rubric-MQM](https://github.com/trotacodigos/Rubric-MQM) as an automatic post-editing (APE) component  
 - Fully asynchronous OpenAI API integration   
@@ -24,11 +28,12 @@ export OPENAI_API_KEYS=sk-key1,sk-key2
 ```
 
 ### ➡ Clone Rubric-MQM as a submodule
-This project uses Rubric-MQM as an automatic post-editing (APE) component.
-Clone it under the name rubric_mqm and add it to PYTHONPATH.
+This project uses Rubric-MQM (version 2.0) as an automatic post-editing (APE) component.
+Clone it at the v2.0 release under the name rubric_mqm and add it to PYTHONPATH.
 
 ```bash
-git clone https://github.com/trotacodigos/Rubric-MQM rubric_mqm
+git clone --branch v2.0 https://github.com/trotacodigos/Rubric-MQM.git rubric_mqm
+
 export PYTHONPATH=$PYTHONPATH:/your/full/path/to/rubric_mqm
 ```
 

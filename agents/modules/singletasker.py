@@ -29,41 +29,38 @@ async def run_single_async(
     # Different settings for different tasks
     assert task in ("translate", "postedit", "proofread"), f"Unsupported task: {task}"
 
-    # If target is not provided for proofread task, invoke translate agent first
-    # Note: translate task doesn't require target and won't recurse back
-    if task == "proofread" and _is_empty_target(row.get("target")):
-        # Invoke translate agent to get initial translation
-        translation = await run_single_async(cfg, row, "translate")
-        row["target"] = translation
+    row_ = dict(row)  # Make a copy to avoid modifying the original
 
-    # Generate prompt and make API request
+    # If target is not provided for proofread/postedit task, invoke translate agent first
+    if task in ("proofread", "postedit") and _is_empty_target(row_.get("target")):
+        translation = await run_single_async(cfg, row_, "translate")
+        if _is_empty_target(translation):
+            raise ValueError("Translate returned empty target; aborting to avoid infinite recursion.")
+        row_["target"] = translation
+            
     if task == "postedit":
-        # If target is not provided for postedit task, invoke translate agent first
-        # Note: translate task doesn't require target and won't recurse back
-        if _is_empty_target(row.get("target")):
-            translation = await run_single_async(cfg, row, "translate")
-            row["target"] = translation
-        
-        response = engine.run_single(row=row, cfg=cfg)
+        response = engine.run_single(row=row_, cfg=cfg)
         return response["data"]["text"]
-    else:
+    elif task in ("translate", "proofread"):
         prompter, parser = dispatch_methods(task)
         params = dispatch_params(task, cfg)
         request = build_request(
-            src_lang=row["src_lang"],
-            tgt_lang=row["tgt_lang"],
-            src_text=row["src_text"],
-            target=row.get("target", None),
-            domain=row.get("domain", None),
+            src_lang=row_["src_lang"],
+            tgt_lang=row_["tgt_lang"],
+            src_text=row_["src_text"],
+            target=row_.get("target", None),
+            domain=row_.get("domain", None),
             model=cfg["model"]["name"],
             temperature=cfg["model"]["temperature"],
             max_tokens=cfg["model"]["max_tokens"],
             prompter=prompter,
             **params,
         )
-
-        response = await get_one_api(request)
-        if task == "translate":
-            return response.get("content", "")
-        else:
-            return parser.parse_response(response, row["target"])
+    else:
+        raise ValueError(f"Unsupported task: {task}")
+        
+    response = await get_one_api(request)
+    if task == "translate":
+        return response.get("content", "")
+    else:
+        return parser.parse_response(response, row_["target"])

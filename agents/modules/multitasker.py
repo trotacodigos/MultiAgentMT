@@ -13,14 +13,15 @@ async def run_multi_async(
     """
     Multi-agent Framework: translate -> postedit -> proofread
     """
+    row_ = dict(row)
     tasks = ("translate", "postedit", "proofread")
     
     # Skip translate agent if translation is already provided and configured to skip
     skip_translate = bool(
         cfg.get("skip_translate_if_provided", False) and
-        row.get("target") and
-        isinstance(row.get("target"), str) and
-        row.get("target").strip()
+        row_.get("target") and
+        isinstance(row_.get("target"), str) and
+        row_.get("target").strip()
     )
     
     if skip_translate:
@@ -31,10 +32,10 @@ async def run_multi_async(
         cfg["model"]["temperature"] = cfg["model"][task]["temperature"]
         cfg["model"]["max_tokens"] = cfg["model"][task]["max_tokens"]
 
-        response = await run_single_async(cfg, row, task)
+        response = await run_single_async(cfg, row_, task)
 
         if not response:
             return response
-        row["target"] = response
+        row_["target"] = response
 
     return response
