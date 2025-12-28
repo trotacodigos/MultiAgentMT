@@ -3,6 +3,10 @@ version: "v1.0"
 reproducibility:
   seed: 42
 
+# Skip translate agent if translation is already provided in the 'target' column
+# Only applicable for multi-task mode
+skip_translate_if_provided: false
+
 model:
   translate:
     name: gpt-4.1-mini-2025-04-14

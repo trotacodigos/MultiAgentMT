@@ -14,6 +14,17 @@ async def run_multi_async(
     Multi-agent Framework: translate -> postedit -> proofread
     """
     tasks = ("translate", "postedit", "proofread")
+    
+    # Skip translate agent if translation is already provided and configured to skip
+    skip_translate = bool(
+        cfg.get("skip_translate_if_provided", False) and
+        row.get("target") and
+        isinstance(row.get("target"), str) and
+        row.get("target").strip()
+    )
+    
+    if skip_translate:
+        tasks = ("postedit", "proofread")
 
     for task in tasks:
         cfg["model"]["name"] = cfg["model"][task]["name"]
