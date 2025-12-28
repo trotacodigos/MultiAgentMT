@@ -71,7 +71,29 @@ Input data must be provided as a CSV file. The required columns for all modes ar
 Additional notes:
 - `target` is optional for Translation Agent, but is obligatory to Post-edit & Proofread Agents to use it as the initial hypothesis
 - During multi-task execution, agents iteratively upate the `target` field.
-- If you already have a translation, you may skip the Translate Agent (future option). ✅
+- **If you already have a translation, you can skip the Translate Agent** by setting `skip_translate_if_provided: true` in your multi-task configuration. ✅
+  - Skips the translate step and directly proceeds to postedit → proofread
+  - Only available in multi-task mode
+
+**Example: Skip Translate Agent (Multi-task Mode)**
+```yaml
+# Enable skipping translate when translation is already provided
+skip_translate_if_provided: true
+
+model:
+    translate:
+        name: gpt-4.1
+        temperature: 0.7
+        max_tokens: 1024
+    postedit:
+        name: gpt-4o
+        temperature: 0.7
+        max_tokens: 1024
+    proofread:
+        name: gpt-5
+        temperature: 0.7
+        max_tokens: 1024
+```
 
 **Example CSV format**
 |||||||
